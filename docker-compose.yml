@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   laravel:
@@ -35,6 +34,32 @@ services:
       DB_DATABASE: "benchmark"
       DB_USERNAME: "root"
       DB_PASSWORD: ""
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  codeigniter:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.codeigniter
+    container_name: benchmark-codeigniter
+    ports:
+      - "8003:8003"
+    volumes:
+      - ./codeigniter-app:/var/www/codeigniter
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: unless-stopped
+
+  symfony:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.symfony
+    container_name: benchmark-symfony
+    ports:
+      - "8004:8004"
+    volumes:
+      - ./symfony-app:/var/www/symfony
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: unless-stopped

@@ -1,0 +1,40 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    curl \
+    unzip \
+    git \
+    tzdata \
+    nginx \
+    && add-apt-repository ppa:ondrej/php \
+    && apt-get update && apt-get install -y \
+    php8.2-fpm \
+    php8.2-mysql \
+    php8.2-mbstring \
+    php8.2-xml \
+    php8.2-curl \
+    php8.2-zip \
+    php8.2-bcmath \
+    php8.2-tokenizer \
+    php8.2-fileinfo \
+    php8.2-pdo \
+    php8.2-pdo-mysql \
+    php8.2-opcache \
+    php8.2-intl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+COPY nginx-symfony.conf /etc/nginx/sites-available/default
+COPY entrypoint-symfony.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR /var/www/symfony
+
+EXPOSE 8004
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
