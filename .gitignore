@@ -6,10 +6,10 @@ laravel-app/vendor
 webrium-app/vendor
 webrium-app/.env
 
-symfony-app
+
 symfony-app/vendor
 symfony-app/.env
 
-codeigniter-app
 codeigniter-app/vendor
 codeigniter-app/.env
+codeigniter-app/env
