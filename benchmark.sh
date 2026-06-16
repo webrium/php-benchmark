@@ -10,7 +10,7 @@ SYMFONY=http://localhost:8004
 ENDPOINTS=("bench/render" "bench/json")
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 LUA_SCRIPT="$SCRIPT_DIR/check_status.lua"
-COOLDOWN=15
+COOLDOWN=30
 
 if [ ! -f "$LUA_SCRIPT" ]; then
     echo "[ERROR] check_status.lua not found at $LUA_SCRIPT"
