@@ -1,6 +1,6 @@
 # PHP Framework Benchmark
 
-![PHP Framework Benchmark](assets/php-framework-benchmark.png)
+![PHP Framework Benchmark](assets/php-framework-benchmark-2026.png)
 
 A real-world HTTP benchmark comparing popular PHP frameworks under identical conditions.
 Each framework runs inside its own Docker container with **Nginx + PHP-FPM**, default configuration, and no special optimizations enabled.
@@ -30,7 +30,7 @@ Each endpoint returns the same 10-user dataset. No database queries are involved
 - Server: Nginx + PHP-FPM (default worker settings)
 - OPcache: enabled (default configuration)
 - Benchmark tool: [wrk](https://github.com/wg/wrk) - 4 threads, 100 connections, 30 seconds
-- Hardware: Intel Core i5, 16GB RAM
+- Hardware: 16 CPU cores, 16GB RAM
 
 ## Results
 
@@ -78,7 +78,7 @@ Each endpoint returns the same 10-user dataset. No database queries are involved
 
 ## Notable observations
 
-**All four frameworks saturated the CPU under load.** With CPU sampled throughout the run, every framework sat in the ~480-580% range (the container had roughly 6 cores available), meaning each one fully used the CPU it was given. CPU usage alone is therefore not a useful differentiator here - what matters is how many requests each framework delivered for that same saturated CPU. Webrium turned saturated CPU into ~11,900 req/s on `/bench/render`, while Laravel produced ~465 req/s from a comparable CPU load. This is the throughput-per-core gap that the old idle before/after snapshots completely hid.
+**All four frameworks left CPU headroom on this 16-core machine.** With CPU sampled throughout the run, every framework sat in the ~480-580% range - i.e. each used between 5 and 6 cores' worth of CPU out of 16 available, so none of them came close to saturating the host. This means CPU was not the bottleneck for any framework; the limit was per-request overhead and the fixed wrk client load (4 threads, 100 connections), not raw CPU capacity. The real differentiator is how many requests each framework delivered for that similar CPU spend: Webrium turned ~5-6 cores into ~11,900 req/s on `/bench/render`, while Laravel produced ~465 req/s from a comparable CPU load. This throughput-per-core gap is what the old idle before/after snapshots completely hid.
 
 **Memory is where the frameworks separate cleanly.** Webrium, CodeIgniter, and Symfony all held steady between ~37 and ~45 MiB across both endpoints, with very little spread between average and peak. Laravel used noticeably more - ~70 MiB average (81 MiB peak) on render and ~90 MiB average (99 MiB peak) on JSON - and showed a wider gap between average and peak, indicating more memory churn per request.
 
