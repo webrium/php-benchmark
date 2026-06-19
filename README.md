@@ -1,6 +1,6 @@
 # PHP Framework Benchmark
 
-![PHP Framework Benchmark](assets/php-framework-benchmark-2026.png)
+![PHP Framework Benchmark](assets/php-framework-benchmark-2026-jun.png)
 
 A real-world HTTP benchmark comparing popular PHP frameworks under identical conditions.
 Each framework runs inside its own Docker container with **Nginx + PHP-FPM**, default configuration, and no special optimizations enabled.
